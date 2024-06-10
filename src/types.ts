@@ -49,7 +49,8 @@ export enum ActionType {
   KEY_DOWN = "KEY_DOWN",
   CLICKED = "CLICKED",
   TAB_STOP_UPDATED = "TAB_STOP_UPDATED",
-  OPTIONS_UPDATED = "OPTIONS_UPDATED"
+  OPTIONS_UPDATED = "OPTIONS_UPDATED",
+  FOCUSED = "FOCUSED"
 }
 
 export type Action =
@@ -68,6 +69,10 @@ export type Action =
         rowIndex: TabStop["rowIndex"];
         disabled: TabStop["disabled"];
       };
+    }
+  | {
+      type: ActionType.FOCUSED;
+      payload: { id: TabStop["id"] };
     }
   | {
       type: ActionType.KEY_DOWN;
@@ -95,5 +100,6 @@ export type HookResponse = [
   number,
   boolean,
   (event: React.KeyboardEvent) => void,
+  () => void,
   () => void
 ];

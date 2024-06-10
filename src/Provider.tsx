@@ -124,6 +124,12 @@ export function reducer(state: State, action: Action): State {
         rowStartMap: null
       };
     }
+    case ActionType.FOCUSED: {
+      return {
+        ...state,
+        selectedId: getUpdatedSelectedId(state.tabStops, action.payload.id)
+      };
+    }
     case ActionType.KEY_DOWN: {
       const { id, key, ctrlKey } = action.payload;
       const index = state.tabStops.findIndex((tabStop) => tabStop.id === id);
