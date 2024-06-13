@@ -107,16 +107,20 @@ export function useRovingTabIndex(
   }, []);
 
   // Create a stable callback function for handling click events:
-  const handleClick = useCallback(() => {
-    context.dispatch({ type: ActionType.CLICKED, payload: { id: getId() } });
-  }, []);
+  const handleClick =
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    useCallback((_ev: React.MouseEvent) => {
+      context.dispatch({ type: ActionType.CLICKED, payload: { id: getId() } });
+    }, []);
 
-  const handleFocus = useCallback(() => {
-    context.dispatch({
-      type: ActionType.FOCUSED,
-      payload: { id: getId() }
-    });
-  }, []);
+  const handleFocus =
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    useCallback((_ev: React.FocusEvent) => {
+      context.dispatch({
+        type: ActionType.FOCUSED,
+        payload: { id: getId() }
+      });
+    }, []);
 
   // Determine if the current tab stop is the currently active one:
   const selected = getId() === context.state.selectedId;
@@ -127,10 +131,8 @@ export function useRovingTabIndex(
   return {
     tabIndex,
     focused,
-    onKeyDown: (event: React.KeyboardEvent) => handleKeyDown(event),
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onClick: (_ev: React.MouseEvent) => handleClick(),
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onFocus: (_ev: React.FocusEvent) => handleFocus()
+    onKeyDown: handleKeyDown,
+    onClick: handleClick,
+    onFocus: handleFocus
   };
 }
