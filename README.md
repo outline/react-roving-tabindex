@@ -70,12 +70,11 @@ const ToolbarButton = ({ disabled = false, children }: Props) => {
   // The ref of the input to be controlled.
   const ref = useRef<HTMLButtonElement>(null);
 
-  // handleKeyDown and handleClick are stable for the lifetime of the component:
-  const { tabIndex, focused, handleKeyDown, handleClick, handleFocus } =
-    useRovingTabIndex(
-      ref, // Don't change the value of this ref.
-      disabled // But change this as you like throughout the lifetime of the component.
-    );
+  // onKeyDown and onClick are stable for the lifetime of the component:
+  const { tabIndex, focused, onKeyDown, onClick, onFocus } = useRovingTabIndex(
+    ref, // Don't change the value of this ref.
+    disabled // But change this as you like throughout the lifetime of the component.
+  );
 
   // Use some mechanism to set focus on the button if it gets focus.
   // In this case I use the included useFocusEffect hook:
@@ -86,9 +85,9 @@ const ToolbarButton = ({ disabled = false, children }: Props) => {
       ref={ref}
       tabIndex={tabIndex} // tabIndex must be applied here
       disabled={disabled}
-      onKeyDown={handleKeyDown} // handler applied here
-      onClick={handleClick} // handler applied here
-      onFocus={handleFocus} // handler applied here
+      onKeyDown={onKeyDown} // handler applied here
+      onClick={onClick} // handler applied here
+      onFocus={onFocus} // handler applied here
     >
       {children}
     </button>
@@ -117,11 +116,11 @@ return (
     tabIndex={tabIndex}
     disabled={disabled}
     onKeyDown={(event) => {
-      handleKeyDown(event); // handler from the hook
+      onKeyDown(event); // handler from the hook
       someKeyDownHandler(event); // your handler
     }}
     onClick={(event) => {
-      handleClick(event); // handler from the hook
+      onClick(event); // handler from the hook
       someClickHandler(event); // your handler
     }}
   >
@@ -191,8 +190,11 @@ Browsers are [inconsistent in their behaviour](https://zellwk.com/blog/inconsist
 This package supports a roving tabindex in a grid. For each usage of the `useRovingTabIndex` hook in the grid, you _must_ pass a row index value as a third argument to the hook:
 
 ```ts
-const { tabIndex, focused, handleKeyDown, handleClick, handleFocus } =
-  useRovingTabIndex(ref, disabled, someRowIndexValue);
+const { tabIndex, focused, onKeyDown, onClick, onFocus } = useRovingTabIndex(
+  ref,
+  disabled,
+  someRowIndexValue
+);
 ```
 
 The row index value must be the zero-based row index for the grid item that the hook is being used with. Thus all items that represent the first row of grid items should have `0` passed to the hook, the second row `1`, and so on. If the shape of the grid can change dynamically then it is fine to update the row index value. For example, the grid might initially have four items per row but get updated to have three items per row.
