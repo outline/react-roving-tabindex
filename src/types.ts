@@ -96,10 +96,10 @@ export type Context = Readonly<{
   dispatch: React.Dispatch<Action>;
 }>;
 
-export type HookResponse = [
-  number,
-  boolean,
-  (event: React.KeyboardEvent) => void,
-  () => void,
-  () => void
-];
+export type HookResponse = {
+  tabIndex: number;
+  focused: boolean;
+  onKeyDown: (event: React.KeyboardEvent) => void;
+  onClick: (event: React.MouseEvent) => void;
+  onFocus: (event: React.FocusEvent) => void;
+};

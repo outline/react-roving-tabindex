@@ -36,11 +36,11 @@ This package has been written using the React Hooks API, so it is only usable wi
 ## Installation
 
 ```bash
-npm install react-roving-tabindex
+npm install @getoutline/react-roving-tabindex
 
 # or
 
-yarn add react-roving-tabindex
+yarn add @getoutline/react-roving-tabindex
 ```
 
 This package includes TypeScript typings.
@@ -59,7 +59,7 @@ import {
   RovingTabIndexProvider,
   useRovingTabIndex,
   useFocusEffect
-} from "react-roving-tabindex";
+} from "@getoutline/react-roving-tabindex";
 
 type Props = {
   disabled?: boolean;
@@ -70,8 +70,8 @@ const ToolbarButton = ({ disabled = false, children }: Props) => {
   // The ref of the input to be controlled.
   const ref = useRef<HTMLButtonElement>(null);
 
-  // handleKeyDown and handleClick are stable for the lifetime of the component:
-  const [tabIndex, focused, handleKeyDown, handleClick] = useRovingTabIndex(
+  // onKeyDown and onClick are stable for the lifetime of the component:
+  const { tabIndex, focused, onKeyDown, onClick, onFocus } = useRovingTabIndex(
     ref, // Don't change the value of this ref.
     disabled // But change this as you like throughout the lifetime of the component.
   );
@@ -85,8 +85,9 @@ const ToolbarButton = ({ disabled = false, children }: Props) => {
       ref={ref}
       tabIndex={tabIndex} // tabIndex must be applied here
       disabled={disabled}
-      onKeyDown={handleKeyDown} // handler applied here
-      onClick={handleClick} // handler applied here
+      onKeyDown={onKeyDown} // handler applied here
+      onClick={onClick} // handler applied here
+      onFocus={onFocus} // handler applied here
     >
       {children}
     </button>
@@ -115,11 +116,11 @@ return (
     tabIndex={tabIndex}
     disabled={disabled}
     onKeyDown={(event) => {
-      handleKeyDown(event); // handler from the hook
+      onKeyDown(event); // handler from the hook
       someKeyDownHandler(event); // your handler
     }}
     onClick={(event) => {
-      handleClick(event); // handler from the hook
+      onClick(event); // handler from the hook
       someClickHandler(event); // your handler
     }}
   >
@@ -189,7 +190,7 @@ Browsers are [inconsistent in their behaviour](https://zellwk.com/blog/inconsist
 This package supports a roving tabindex in a grid. For each usage of the `useRovingTabIndex` hook in the grid, you _must_ pass a row index value as a third argument to the hook:
 
 ```ts
-const [tabIndex, focused, handleKeyDown, handleClick] = useRovingTabIndex(
+const { tabIndex, focused, onKeyDown, onClick, onFocus } = useRovingTabIndex(
   ref,
   disabled,
   someRowIndexValue
@@ -215,14 +216,14 @@ This package no longer includes a ponyfill for `Array.prototype.findIndex` and n
 The optional ID argument that was the third argument to the `useRovingTabIndex` hook has been replaced with the new optional row index argument. The ID argument was included to support server-side rendering (SSR) but it is not actually required. By default this library auto-generates an ID within the hook. This is not a problem in SSR because it never gets generated and serialized on the server. Thus it is fine for it to be auto-generated even when SSR needs to be supported. So if you have previously used the following...
 
 ```ts
-const [...] = useRovingTabIndex(ref, true, id);
+const {...} = useRovingTabIndex(ref, true, id);
 //                                         ^^
 ```
 
 ... then you can simply remove that third argument:
 
 ```ts
-const [...] = useRovingTabIndex(ref, true);
+const {...} = useRovingTabIndex(ref, true);
 ```
 
 ### From version 0.x to version 1

@@ -1,6 +1,6 @@
 {
   "name": "@getoutline/react-roving-tabindex",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "React implementation of a roving tabindex, now with grid support",
   "author": "stevejay",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "tabindex",
     "grid"
   ],
-  "repository": "stevejay/react-roving-tabindex",
+  "repository": "outline/react-roving-tabindex",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "sideEffects": false,
