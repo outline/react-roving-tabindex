@@ -124,5 +124,13 @@ export function useRovingTabIndex(
   const tabIndex = selected ? 0 : -1;
   const focused = selected && context.state.allowFocusing;
 
-  return [tabIndex, focused, handleKeyDown, handleClick, handleFocus];
+  return {
+    tabIndex,
+    focused,
+    onKeyDown: (event: React.KeyboardEvent) => handleKeyDown(event),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    onClick: (_ev: React.MouseEvent) => handleClick(),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    onFocus: (_ev: React.FocusEvent) => handleFocus()
+  };
 }
