@@ -94,6 +94,7 @@ export function reducer(state: State, action: Action): State {
       }
       return {
         ...state,
+        allowFocusing: false,
         selectedId: getUpdatedSelectedId(newTabStops, state.selectedId),
         tabStops: newTabStops,
         rowStartMap: null
@@ -128,6 +129,12 @@ export function reducer(state: State, action: Action): State {
       return {
         ...state,
         selectedId: getUpdatedSelectedId(state.tabStops, action.payload.id)
+      };
+    }
+    case ActionType.ITEMS_UPDATED: {
+      return {
+        ...state,
+        items: action.payload.items
       };
     }
     case ActionType.KEY_DOWN: {
@@ -443,6 +450,7 @@ function createRowStartMap(state: State) {
 }
 
 const INITIAL_STATE: State = {
+  items: [],
   selectedId: null,
   allowFocusing: false,
   tabStops: [],
@@ -498,15 +506,21 @@ export const RovingTabIndexContext = createContext<Context>({
  */
 export const Provider = ({
   children,
-  options
+  options,
+  items
 }: {
   children: ReactNode;
   options?: Options;
+  items: State["items"];
 }): ReactElement => {
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL_STATE,
     ...options
   });
+
+  useEffect(() => {
+    dispatch({ type: ActionType.ITEMS_UPDATED, payload: { items } });
+  }, [items]);
 
   // Update the options whenever they change:
   useEffect(() => {

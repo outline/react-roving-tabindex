@@ -30,6 +30,7 @@ export type TabStop = Readonly<{
 export type RowStartMap = Map<Exclude<TabStop["rowIndex"], null>, number>;
 
 export type State = Readonly<{
+  items: Array<unknown>;
   selectedId: string | null;
   allowFocusing: boolean;
   tabStops: readonly TabStop[];
@@ -50,7 +51,8 @@ export enum ActionType {
   CLICKED = "CLICKED",
   TAB_STOP_UPDATED = "TAB_STOP_UPDATED",
   OPTIONS_UPDATED = "OPTIONS_UPDATED",
-  FOCUSED = "FOCUSED"
+  FOCUSED = "FOCUSED",
+  ITEMS_UPDATED = "ITEMS_UPDATED"
 }
 
 export type Action =
@@ -58,6 +60,7 @@ export type Action =
       type: ActionType.REGISTER_TAB_STOP;
       payload: TabStop;
     }
+  | { type: ActionType.ITEMS_UPDATED; payload: { items: State["items"] } }
   | {
       type: ActionType.UNREGISTER_TAB_STOP;
       payload: { id: TabStop["id"] };

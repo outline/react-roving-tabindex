@@ -96,7 +96,7 @@ const ToolbarButton = ({ disabled = false, children }: Props) => {
 
 const SomeComponent = () => (
   // Wrap each roving tabindex group in a RovingTabIndexProvider.
-  <RovingTabIndexProvider>
+  <RovingTabIndexProvider items={/* data for list items */}>
     {/*
       it's fine for the roving tabindex components to be nested
       in other DOM elements or React components.
@@ -135,7 +135,10 @@ The `RovingTabIndexProvider` component includes an optional `options` prop for t
 
 ```tsx
 const SomeComponent = () => (
-  <RovingTabIndexProvider options={{ direction: "vertical" }}>
+  <RovingTabIndexProvider
+    options={{ direction: "vertical" }}
+    items={/* data for list items */}
+  >
     {/* whatever */}
   </RovingTabIndexProvider>
 );
@@ -149,7 +152,10 @@ By default, it is the ArrowLeft and ArrowRight keys that are used to move to the
 
 ```ts
 const SomeComponent = () => (
-  <RovingTabIndexProvider options={{ direction: "vertical" }}>
+  <RovingTabIndexProvider
+    options={{ direction: "vertical" }}
+    items={/* data for list items */}
+  >
     {/* whatever */}
   </RovingTabIndexProvider>
 );
@@ -163,7 +169,10 @@ By default, if you try to tab past the very start or very end of the roving tabi
 
 ```ts
 const SomeComponent = () => (
-  <RovingTabIndexProvider options={{ loopAround: true }}>
+  <RovingTabIndexProvider
+    options={{ loopAround: true }}
+    items={/* data for list items */}
+  >
     {/* whatever */}
   </RovingTabIndexProvider>
 );
@@ -177,7 +186,10 @@ By default, clicking on a roving tabindex item will not result in `focus()` bein
 
 ```ts
 const SomeComponent = () => (
-  <RovingTabIndexProvider options={{ focusOnClick: true }}>
+  <RovingTabIndexProvider
+    options={{ focusOnClick: true }}
+    items={/* data for list items */}
+  >
     {/* whatever */}
   </RovingTabIndexProvider>
 );

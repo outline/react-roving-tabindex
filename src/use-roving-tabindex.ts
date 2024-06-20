@@ -72,7 +72,7 @@ export function useRovingTabIndex(
         payload: { id }
       });
     };
-  }, []);
+  }, [context.state.items]);
 
   // Update the tab stop data if rowIndex or disabled change.
   // The isMounted flag is used to prevent this effect running
