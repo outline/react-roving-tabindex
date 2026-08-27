@@ -1,5 +1,15 @@
 # Changelog
 
+## 3.3.0
+
+- Widened the ref parameter types so the library type-checks against `@types/react` 19,
+  where `useRef<T>(null)` returns `RefObject<T | null>`. `useRovingTabIndex` now accepts
+  a `RefObject<Element | null>`, `useFocusEffect` a `RefObject<SVGElement | HTMLElement | null>`,
+  and `TabStop["domElementRef"]` is `RefObject<Element | null>`. These types are wider than
+  before, so callers on `@types/react` 17 and 18 continue to compile.
+- No runtime behaviour changed.
+- Updated dev dependencies to React 19, TypeScript 5 and `@testing-library/react` 16.
+
 ## 3.2.0
 
 - Updated dev dependencies.

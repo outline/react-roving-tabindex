@@ -22,7 +22,7 @@ export enum Navigation {
 
 export type TabStop = Readonly<{
   id: string;
-  domElementRef: React.RefObject<Element>;
+  domElementRef: React.RefObject<Element | null>;
   disabled: boolean;
   rowIndex: number | null;
 }>;

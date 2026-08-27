@@ -38,7 +38,8 @@ export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case ActionType.REGISTER_TAB_STOP: {
       const newTabStop = action.payload;
-      if (!newTabStop.domElementRef.current) {
+      const newDomElement = newTabStop.domElementRef.current;
+      if (!newDomElement) {
         return state;
       }
 
@@ -59,7 +60,7 @@ export function reducer(state: State, action: Action): State {
           loopTabStop.domElementRef.current &&
           !!(
             loopTabStop.domElementRef.current.compareDocumentPosition(
-              newTabStop.domElementRef.current
+              newDomElement
             ) & DOCUMENT_POSITION_FOLLOWING
           )
         ) {

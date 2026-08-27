@@ -1,15 +1,19 @@
-import React, { FC, useRef } from "react";
+import React, { ReactNode, useRef } from "react";
 import { render } from "@testing-library/react";
 import { Provider } from "../Provider";
 import { useRovingTabIndex } from "../use-roving-tabindex";
 
-const TestButton: FC<{ disabled: boolean; rowIndex?: number }> = ({
+const TestButton = ({
   disabled,
   rowIndex = null,
   children
+}: {
+  disabled: boolean;
+  rowIndex?: number | null;
+  children?: ReactNode;
 }) => {
   const ref = useRef<HTMLButtonElement>(null);
-  const [tabIndex, focused, handleKeyDown, handleClick] = useRovingTabIndex(
+  const { tabIndex, focused, onKeyDown, onClick } = useRovingTabIndex(
     ref,
     disabled,
     rowIndex
@@ -17,8 +21,8 @@ const TestButton: FC<{ disabled: boolean; rowIndex?: number }> = ({
   return (
     <button
       ref={ref}
-      onKeyDown={handleKeyDown}
-      onClick={handleClick}
+      onKeyDown={onKeyDown}
+      onClick={onClick}
       tabIndex={tabIndex}
       data-focused={focused}
     >
@@ -27,10 +31,14 @@ const TestButton: FC<{ disabled: boolean; rowIndex?: number }> = ({
   );
 };
 
-const TestToolbar: FC<{ flags?: Array<boolean> }> = ({
+const ITEMS: Array<unknown> = [];
+
+const TestToolbar = ({
   flags = [false, false, false]
+}: {
+  flags?: Array<boolean>;
 }) => (
-  <Provider>
+  <Provider items={ITEMS}>
     <TestButton disabled={flags[0]}>Button One</TestButton>
     <div>
       <TestButton disabled={flags[1]}>Button Two</TestButton>
@@ -39,10 +47,12 @@ const TestToolbar: FC<{ flags?: Array<boolean> }> = ({
   </Provider>
 );
 
-const TestGrid: FC<{ flags?: Array<boolean> }> = ({
+const TestGrid = ({
   flags = [false, false, false]
+}: {
+  flags?: Array<boolean>;
 }) => (
-  <Provider>
+  <Provider items={ITEMS}>
     <TestButton disabled={flags[0]} rowIndex={0}>
       Button One
     </TestButton>

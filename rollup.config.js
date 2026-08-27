@@ -38,7 +38,6 @@ export default {
     svgr(),
     nodeResolve(),
     typescript({
-      rollupCommonJSResolveHack: true,
       clean: true
     }),
     commonjs(),
