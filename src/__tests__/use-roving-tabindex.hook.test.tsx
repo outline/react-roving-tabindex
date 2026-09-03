@@ -1,4 +1,4 @@
-import { renderHook, act } from "@testing-library/react-hooks";
+import { renderHook, act } from "@testing-library/react";
 import React, { RefObject, KeyboardEvent } from "react";
 import { RovingTabIndexContext } from "../Provider";
 import { ActionType, State } from "../types";
@@ -10,6 +10,7 @@ jest.mock("../unique-id");
 (uniqueId as jest.Mock).mockReturnValue(MOCK_ID);
 
 const INITIAL_STATE: State = {
+  items: [],
   selectedId: null,
   allowFocusing: false,
   tabStops: [],
@@ -18,9 +19,6 @@ const INITIAL_STATE: State = {
   loopAround: false,
   rowStartMap: null
 };
-
-const KEY_DOWN_HANDLER_INDEX = 2;
-const CLICK_HANDLER_INDEX = 3;
 
 const MockRovingTabIndexProvider = ({ value, children }) => (
   <RovingTabIndexContext.Provider value={value}>
@@ -130,12 +128,13 @@ it("should return the correct values when the tab stop is not selected", () => {
     wrapper
   });
 
-  expect(result.current).toEqual([
-    -1,
-    false,
-    expect.any(Function),
-    expect.any(Function)
-  ]);
+  expect(result.current).toEqual({
+    tabIndex: -1,
+    focused: false,
+    onKeyDown: expect.any(Function),
+    onClick: expect.any(Function),
+    onFocus: expect.any(Function)
+  });
 });
 
 describe("when the tab stop is selected", () => {
@@ -155,12 +154,13 @@ describe("when the tab stop is selected", () => {
         wrapper
       });
 
-      expect(result.current).toEqual([
-        0,
-        true,
-        expect.any(Function),
-        expect.any(Function)
-      ]);
+      expect(result.current).toEqual({
+        tabIndex: 0,
+        focused: true,
+        onKeyDown: expect.any(Function),
+        onClick: expect.any(Function),
+        onFocus: expect.any(Function)
+      });
     });
   });
 
@@ -184,12 +184,13 @@ describe("when the tab stop is selected", () => {
         wrapper
       });
 
-      expect(result.current).toEqual([
-        0,
-        false,
-        expect.any(Function),
-        expect.any(Function)
-      ]);
+      expect(result.current).toEqual({
+        tabIndex: 0,
+        focused: false,
+        onKeyDown: expect.any(Function),
+        onClick: expect.any(Function),
+        onFocus: expect.any(Function)
+      });
     });
   });
 });
@@ -215,12 +216,13 @@ describe("when the tab stop is not selected", () => {
         wrapper
       });
 
-      expect(result.current).toEqual([
-        -1,
-        false,
-        expect.any(Function),
-        expect.any(Function)
-      ]);
+      expect(result.current).toEqual({
+        tabIndex: -1,
+        focused: false,
+        onKeyDown: expect.any(Function),
+        onClick: expect.any(Function),
+        onFocus: expect.any(Function)
+      });
     });
   });
 
@@ -244,12 +246,13 @@ describe("when the tab stop is not selected", () => {
         wrapper
       });
 
-      expect(result.current).toEqual([
-        -1,
-        false,
-        expect.any(Function),
-        expect.any(Function)
-      ]);
+      expect(result.current).toEqual({
+        tabIndex: -1,
+        focused: false,
+        onKeyDown: expect.any(Function),
+        onClick: expect.any(Function),
+        onFocus: expect.any(Function)
+      });
     });
   });
 });
@@ -268,7 +271,7 @@ it("should dispatch the correct event when the tab stop is clicked", () => {
 
   contextValue.dispatch.mockClear();
   act(() => {
-    result.current[CLICK_HANDLER_INDEX]();
+    result.current.onClick({} as React.MouseEvent);
   });
 
   expect(contextValue.dispatch).toHaveBeenCalledTimes(1);
@@ -293,7 +296,7 @@ it("should dispatch the correct event when the user presses a related key on the
 
   contextValue.dispatch.mockClear();
   act(() => {
-    result.current[KEY_DOWN_HANDLER_INDEX]({
+    result.current.onKeyDown({
       key: "Home",
       ctrlKey: true,
       preventDefault: mockPreventDefault
@@ -327,7 +330,7 @@ it("should not dispatch anything when the user presses an unrelated key on the t
 
   contextValue.dispatch.mockClear();
   act(() => {
-    result.current[KEY_DOWN_HANDLER_INDEX]({
+    result.current.onKeyDown({
       key: "a",
       ctrlKey: true,
       preventDefault: mockPreventDefault

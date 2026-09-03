@@ -12,7 +12,7 @@ import { uniqueId } from "./unique-id";
 
 /**
  * Includes the given DOM element in the current roving tabindex.
- * @param {RefObject<Element>} domElementRef The DOM element to include.
+ * @param {RefObject<Element | null>} domElementRef The DOM element to include.
  * This must be the same DOM element for the lifetime of the containing
  * component.
  * @param {boolean} disabled Whether or not the DOM element is currently
@@ -37,7 +37,7 @@ import { uniqueId } from "./unique-id";
  * stop element.
  */
 export function useRovingTabIndex(
-  domElementRef: RefObject<Element>,
+  domElementRef: RefObject<Element | null>,
   disabled: boolean,
   rowIndex: number | null = null
 ): HookResponse {
@@ -95,7 +95,7 @@ export function useRovingTabIndex(
 
   // Create a stable callback function for handling key down events:
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    const key = EventKey[event.key];
+    const key = EventKey[event.key as keyof typeof EventKey];
     if (!key) {
       return;
     }
